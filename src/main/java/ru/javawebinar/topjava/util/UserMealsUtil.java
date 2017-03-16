@@ -7,7 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -32,16 +36,11 @@ public class UserMealsUtil {
         calPerDay = mealList
                 .parallelStream()
                 .unordered()
-                .collect(
-                        HashMap::new,
-                        (map, element) -> {
-                            synchronized (map) {
-                                LocalDate localDate = element.getDateTime().toLocalDate();
-                                map.computeIfPresent(localDate, (k, v) -> map.get(k) + v);
-                                map.putIfAbsent(localDate, element.getCalories());
-                            }
-                        },
-                        HashMap::putAll);
+                .collect(Collectors.groupingBy(
+                        (t) -> t.getDateTime().toLocalDate(),
+                        Collectors.summingInt(UserMeal::getCalories)
+                        )
+                );
 
 
         return mealList
