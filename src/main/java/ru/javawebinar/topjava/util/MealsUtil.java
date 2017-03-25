@@ -60,4 +60,15 @@ public class MealsUtil {
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
         return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
+
+    /**
+     * Get List of MealWithExceed without filtering by time, with hardcoded calories
+     * @param meals - List of meals
+     * @return List of MealWithExceed
+     */
+    public static List<MealWithExceed> getWithExceed(List<Meal> meals) {
+        final List<MealWithExceed> mealsWithExceeded =
+                getFilteredWithExceededByCycle(meals,  LocalTime.MIN, LocalTime.MAX, 2000);
+        return mealsWithExceeded;
+    }
 }
