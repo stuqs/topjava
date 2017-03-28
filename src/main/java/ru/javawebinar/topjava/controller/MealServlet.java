@@ -34,9 +34,12 @@ public class MealServlet extends HttpServlet {
                 case "delete": {
                     int id = Integer.parseInt(request.getParameter("id"));
                     mealService.removeMeal(id);
-                    forward = LIST_MEAL_JSP;
-                    request.setAttribute("meals", MealsUtil.getWithExceed(mealService.listMeal()));
-                    break;
+                    forward = MEALS_LINK;
+
+                    LOG.debug("Got action " + action + "Redirect to " + forward);
+
+                    response.sendRedirect(forward);
+                    return;
                 }
                 case "edit": {
                     int id = Integer.parseInt(request.getParameter("id"));
