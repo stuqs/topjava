@@ -40,7 +40,7 @@ public class MealsUtil {
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
                 .map(meal -> createWithExceed(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(MealWithExceed::getDateTime)).collect(Collectors.toList());
     }
 
     public static List<MealWithExceed> getFilteredWithExceededByCycle(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -58,7 +58,7 @@ public class MealsUtil {
     }
 
     public static MealWithExceed createWithExceed(Meal meal, boolean exceeded) {
-        return new MealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
+        return new MealWithExceed(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), exceeded);
     }
 
     /**
@@ -67,8 +67,6 @@ public class MealsUtil {
      * @return List of MealWithExceed
      */
     public static List<MealWithExceed> getWithExceed(List<Meal> meals) {
-        final List<MealWithExceed> mealsWithExceeded =
-                getFilteredWithExceededByCycle(meals,  LocalTime.MIN, LocalTime.MAX, 2000);
-        return mealsWithExceeded;
+        return getFilteredWithExceeded(meals,  LocalTime.MIN, LocalTime.MAX, 2000);
     }
 }
