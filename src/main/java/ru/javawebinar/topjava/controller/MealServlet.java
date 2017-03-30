@@ -36,7 +36,7 @@ public class MealServlet extends HttpServlet {
                     mealService.removeMeal(id);
                     forward = MEALS_LINK;
 
-                    LOG.debug("Got action " + action + "Redirect to " + forward);
+                    LOG.debug("Got action {} Redirect to {}", action, forward);
 
                     response.sendRedirect(forward);
                     return;
@@ -56,11 +56,11 @@ public class MealServlet extends HttpServlet {
                     request.setAttribute("meals", MealsUtil.getWithExceed(mealService.listMeal()));
             }
         } catch (Exception e) {
-            LOG.debug("Got exception " + e.toString());
+            LOG.info("Got exception {}", e);
             forward = LIST_MEAL_JSP;
             request.setAttribute("meals", MealsUtil.getWithExceed(mealService.listMeal()));
         }
-        LOG.debug("Got action " + action + "Forward to " + forward);
+        LOG.debug("Got action {} Redirect to {}", action, forward);
 
         request.getRequestDispatcher(forward).forward(request, response);
     }
@@ -85,10 +85,10 @@ public class MealServlet extends HttpServlet {
                 mealService.updateMeal(meal);
             }
         } catch (Exception e) {
-            LOG.debug("Got exception " + e.toString());
+            LOG.info("Got exception {}", e);
         }
 
-        LOG.debug("Redirect to " + MEALS_LINK);
+        LOG.debug("Redirect to {}", MEALS_LINK);
 
         response.sendRedirect(MEALS_LINK);
     }

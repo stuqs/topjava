@@ -58,9 +58,9 @@ public final class MealsDataStaticImpl implements MealsData {
         try {
             meal.setId(ID.getAndIncrement());
             MEALS.put(meal.getId(), meal);
-            LOG.debug("Add meal with id " + meal.getId());
-        } catch (Exception e){
-            LOG.debug("Got Exception while add to meal - " + e.toString());
+            LOG.debug("Add meal with id {}", meal.getId());
+        } catch (Exception e) {
+            LOG.info("Got Exception while add to meal - {}", e);
         }
     }
 
@@ -68,9 +68,9 @@ public final class MealsDataStaticImpl implements MealsData {
     public void update(Meal meal) {
         try {
             MEALS.put(meal.getId(), meal);
-            LOG.debug("Add meal with id " + meal.getId());
-        } catch (Exception e){
-            LOG.debug("Got Exception while update meal - " + e.toString());
+            LOG.debug("Add meal with id {}", meal.getId());
+        } catch (Exception e) {
+            LOG.info("Got Exception while update meal - {}", e);
         }
     }
 
@@ -78,8 +78,8 @@ public final class MealsDataStaticImpl implements MealsData {
     public void remove(int id) {
         try {
             MEALS.remove(id);
-        } catch (Exception e){
-            LOG.debug("Got Exception while remove meal - " + e.toString());
+        } catch (Exception e) {
+            LOG.info("Got Exception while remove meal - {}", e);
         }
     }
 
@@ -93,8 +93,8 @@ public final class MealsDataStaticImpl implements MealsData {
     public Meal getById(int id) {
         try {
             return MEALS.get(id);
-        } catch (Exception e){
-            LOG.debug("Got Exception while search meal by id - " + e.toString());
+        } catch (Exception e) {
+            LOG.debug("Got Exception while search meal by id - {}", e);
         }
         return null;
     }
