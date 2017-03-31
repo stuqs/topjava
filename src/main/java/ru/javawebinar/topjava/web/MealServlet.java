@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 30.3.2017
- * Made by stuqs
- */
-
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
@@ -20,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Enumeration;
 import java.util.Objects;
 
 /**
@@ -28,6 +24,9 @@ import java.util.Objects;
  */
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
+    private final static String INSERT_OR_EDIT_JSP = "pages/meal.jsp";
+    private final static String LIST_MEAL_JSP = "pages/mealList.jsp";
+    private final static String MEALS_LINK = "meals";
 
     private MealRepository repository;
 
@@ -49,7 +48,7 @@ public class MealServlet extends HttpServlet {
 
         LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         repository.save(meal);
-        response.sendRedirect("meals");
+        response.sendRedirect(MEALS_LINK);
     }
 
     @Override
@@ -61,22 +60,22 @@ public class MealServlet extends HttpServlet {
                 int id = getId(request);
                 LOG.info("Delete {}", id);
                 repository.delete(id);
-                response.sendRedirect("meals");
+                response.sendRedirect(MEALS_LINK);
                 break;
             case "create":
             case "update":
-                final Meal meal = action.equals("create") ?
+                final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         repository.get(getId(request));
                 request.setAttribute("meal", meal);
-                request.getRequestDispatcher("/meal.jsp").forward(request, response);
+                request.getRequestDispatcher(INSERT_OR_EDIT_JSP).forward(request, response);
                 break;
             case "all":
             default:
                 LOG.info("getAll");
                 request.setAttribute("meals",
                         MealsUtil.getWithExceeded(repository.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY));
-                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                request.getRequestDispatcher(LIST_MEAL_JSP).forward(request, response);
                 break;
         }
     }
