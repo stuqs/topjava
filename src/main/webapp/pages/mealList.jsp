@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:if test="${not empty meals}">
-    <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealWithExceed>"/>
+    <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.to.MealWithExceed>"/>
 </c:if>
 <html>
 <head>
