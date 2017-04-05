@@ -1,12 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:c="http://www.springframework.org/schema/c"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-       http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
     <!--_________Static implementation_________-->
@@ -22,17 +18,5 @@
 
     <bean id="mealRestController" class="ru.javawebinar.topjava.web.meal.MealRestController"
           c:_0-ref="mealService"/>
-
-
     <!--_________________________________________-->
-
-
-    <!--<context:annotation-config/>-->
-
-    <!--<context:component-scan base-package="ru.javawebinar.**.repository"/>-->
-
-    <!--<context:component-scan base-package="ru.javawebinar.**.service"/>-->
-
-    <!--<context:component-scan base-package="ru.javawebinar.**.web"/>-->
-
 </beans>

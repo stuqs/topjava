@@ -7,6 +7,8 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkIdConsistent;
@@ -22,12 +24,23 @@ public class MealRestController {
 
     public List<MealWithExceed> getAll() {
         LOG.info("getAll");
-        return service.getAll(AuthorizedUser.id());
+        return service.getAll(AuthorizedUser.getId());
+    }
+
+    public List<MealWithExceed> getFiltered(LocalDate startDate, LocalDate endDate,
+                                            LocalTime startTime, LocalTime endTime) {
+        LOG.info("getFiltered");
+        return service.getFiltered(AuthorizedUser.getId(), startDate, endDate, startTime, endTime);
     }
 
     public Meal get(int id) {
         LOG.info("get " + id);
-        return service.get(id, AuthorizedUser.id());
+        return service.get(id, AuthorizedUser.getId());
+    }
+
+    public void delete(int id) {
+        LOG.info("delete " + id);
+        service.delete(id, AuthorizedUser.getId());
     }
 
     public Meal create(Meal meal) {
@@ -36,14 +49,8 @@ public class MealRestController {
         return service.save(meal);
     }
 
-    public void delete(int id) {
-        LOG.info("delete " + id);
-        service.delete(id, AuthorizedUser.id());
-    }
-
-    public void update(Meal meal, int id) {
+    public void update(Meal meal) {
         LOG.info("update " + meal);
-        checkIdConsistent(meal, id);
         service.save(meal);
     }
 }

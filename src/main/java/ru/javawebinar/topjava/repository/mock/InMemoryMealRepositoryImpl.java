@@ -2,8 +2,10 @@ package ru.javawebinar.topjava.repository.mock;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,7 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public Meal get ( int id, int userId){
+    public Meal get(int id, int userId) {
         Meal meal = repository.get(id);
         if (meal != null && meal.getUserId() == userId) {
             return meal;
@@ -53,14 +55,17 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAll (int userId){
+    public List<Meal> getAll(int userId) {
+        return getFilteredByDate(userId, LocalDate.MIN, LocalDate.MAX);
+    }
+
+    public List<Meal> getFilteredByDate(int userId, LocalDate start, LocalDate end) {
         return repository.values()
                 .stream()
                 .filter(meal -> meal.getUserId() == userId)
+                .filter(meal -> DateTimeUtil.isBetween(meal.getDate(), start, end))
                 .sorted(Comparator.comparing(Meal::getDateTime, Comparator.reverseOrder()))
                 .collect(Collectors.toList());
     }
-
-    // TODO: 04.04.2017 add Filter by Date
 }
 
