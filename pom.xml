@@ -23,7 +23,7 @@
         <slf4j.version>1.7.25</slf4j.version>
 
         <!--DB-->
-        <postgresql.version>42.0.0</postgresql.version>
+        <mysql.version>6.0.6</mysql.version>
         <!--    Tests  -->
         <junit.version>4.12</junit.version>
     </properties>
@@ -102,9 +102,9 @@
 
         <!--DataBase-->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
 
         <!--Web-->
