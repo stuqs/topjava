@@ -33,4 +33,5 @@ CREATE TABLE meals (
   user_id     INT UNSIGNED NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id)
     ON DELETE CASCADE
-);
+)
+  AUTO_INCREMENT = 100000;
