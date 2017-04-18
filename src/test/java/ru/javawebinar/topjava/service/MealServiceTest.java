@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
@@ -26,10 +29,49 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private long start;
+    private static StringBuffer log;
+
+
+    @Rule
+    public final TestName name = new TestName();
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     static {
         SLF4JBridgeHandler.install();
+        log = new StringBuffer(200);
     }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        log.append("-----------------------------------------\n");
+        log.append("-------------Test statistics-------------\n");
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+        log.append("-------------End statistics--------------\n");
+        log.append("-----------------------------------------\n");
+        System.out.println(log.toString());
+    }
+
+    @Before
+    public void start() {
+        start = System.currentTimeMillis();
+    }
+
+    @After
+    public void end() {
+        log.append("Test ");
+        log.append(name.getMethodName());
+        log.append("\t\t\t\t\t");
+        log.append(System.currentTimeMillis() - start);
+        log.append(" ms\n");
+    }
+
+
 
     @Autowired
     private MealService service;
@@ -40,8 +82,10 @@ public class MealServiceTest {
         MATCHER.assertCollectionEquals(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2), service.getAll(USER_ID));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testDeleteNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("Not found entity with id=100002");
         service.delete(MEAL1_ID, 1);
     }
 
@@ -58,8 +102,10 @@ public class MealServiceTest {
         MATCHER.assertEquals(ADMIN_MEAL1, actual);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testGetNotFound() throws Exception {
+        thrown.expect(NoResultException.class);
+        thrown.expectMessage("No entity found for query");
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
@@ -70,8 +116,10 @@ public class MealServiceTest {
         MATCHER.assertEquals(updated, service.get(MEAL1_ID, USER_ID));
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void testUpdateNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
+        thrown.expectMessage("Not found entity with id=100002");
         service.update(MEAL1, ADMIN_ID);
     }
 
